@@ -4,16 +4,19 @@ from naoqi import ALProxy
 def jointRotation(motionProxy, names, angles, times, isAbsolute):
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
-def main(robotIP, PORT=9559):
+def main(robotIP, PORT):
     # Set prooxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
     postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
-    
-    # Wake up robot
-    motionProxy.wakeUp()
+
+    # Set stiffness for whole body
+    motionProxy.setStiffnesses("Body", 1.0)
 
     # Send robot to Stand Init
     postureProxy.goToPosture("StandInit", 0.5)
+
+    # Fix both of NAO's feet to the ground
+    motionProxy.wbFootState("Fixed", "Legs")
 
     # Right and Left Shoulder Pitch/Roll
     jointRotation(motionProxy, ["LShoulderPitch", "LShoulderRoll"], [0.15, -0.15], 1.0, True)
@@ -27,28 +30,8 @@ def main(robotIP, PORT=9559):
     jointRotation(motionProxy, "LElbowRoll", -1.5, 1.0, True)
     jointRotation(motionProxy, "RElbowRoll", 1.5, 1.0, True)
 
-    #effector   = "LElbowRoll"
-    #frame      = motion.FRAME_TORSO
-    #axisMask   = almath.AXIS_MASK_VEL # just control position
-    #useSensorValues = False
-
-    #path = []
-    #currentTf = motionProxy.getTransform(effector, frame, useSensorValues)
-    #targetTf  = almath.Transform(currentTf)
-    #targetTf.r1_c4 -= 0.04 # x
-    #targetTf.r2_c4 -= 0.06 # y
-    #targetTf.r3_c4 += 0.06 # z
-
-    #path.append(list(targetTf.toVector()))
-    #path.append(currentTf)
-
-    # Go to the target and back again
-    #times = [2.0, 4.0] # seconds
-
-    #motionProxy.transformInterpolations(effector, frame, path, axisMask, times)
-
-    # Go to rest position
-    motionProxy.rest()
+    # Right and Left Hip Pitch
+    jointRotation(motionProxy, ["LHipPitch", "RHipPitch"], -1.0, 3.0, True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -58,4 +41,7 @@ if __name__ == "__main__":
                         help="Naoqi port number")
 
     args = parser.parse_args()
+    motionProxy = ALProxy("ALMotion", args.ip, args.port)
+    motionProxy.wakeUp()
     main(args.ip, args.port)
+    motionProxy.rest()
