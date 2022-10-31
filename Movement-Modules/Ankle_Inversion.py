@@ -3,12 +3,8 @@ import time
 from naoqi import ALProxy
 
 def main(robotIP, PORT):
-    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxy for ALMotion to access its methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
-    postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
-
-    # Send robot to Stand Init
-    postureProxy.goToPosture("StandInit", 0.5)
 
     # Enable Whole Body Balancer
     motionProxy.wbEnable(True)
@@ -17,8 +13,8 @@ def main(robotIP, PORT):
     motionProxy.wbFootState("Fixed", "Legs")
 
     # Leg Movement to put NAO in sitiing position
-    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch"]
-    angles = [-1.0, -1.0, 1.4, 1.4]
+    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch", "LShoulderPitch", "RShoulderPitch"]
+    angles = [-1.0, -1.0, 1.4, 1.4, 0.5, 0.5]
     times = 3.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
@@ -30,8 +26,11 @@ def main(robotIP, PORT):
     motionProxy.wbFootState("Fixed", "LLeg")
     motionProxy.wbFootState("Free", "RLeg")
 
+    # Time to hold ankle position
+    time.sleep(0.1)
+
     # Right Ankle Inversion Inward
-    names = ["RAnkleRoll"]
+    names = "RAnkleRoll"
     angles = 0.3
     times = 1.0
     isAbsolute = True
@@ -41,7 +40,7 @@ def main(robotIP, PORT):
     time.sleep(2.0)
 
     # Right Ankle Invsersion Outward
-    names = ["RAnkleRoll"]
+    names = "RAnkleRoll"
     angles = 0.03
     times = 1.0
     isAbsolute = True
@@ -52,7 +51,7 @@ def main(robotIP, PORT):
     motionProxy.wbFootState("Free", "LLeg")
 
     # Left Ankle Inversion Outward
-    names = ["LAnkleRoll"]
+    names = "LAnkleRoll"
     angles = -0.3
     times = 1.0
     isAbsolute = True
@@ -62,11 +61,24 @@ def main(robotIP, PORT):
     time.sleep(2.0)
 
     # Left Ankle Inversion Inward
-    names = ["LAnkleRoll"]
+    names = "LAnkleRoll"
     angles = -0.03
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Fix both legs
+    motionProxy.wbFootState("Fixed", "Legs")
+
+    # Bring NAO back to standing position
+    names = ["LShoulderPitch", "RShoulderPitch", "LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch", "LAnklePitch", "RAnklePitch"]
+    angles = [1.442, 1.442, 0.14, 0.14, -0.092, -0.092, 0.3, 0.3]
+    times = 2.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Time to hold position
+    time.sleep(2.0)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -76,7 +88,19 @@ if __name__ == "__main__":
                         help="Naoqi port number")
 
     args = parser.parse_args()
+    
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", args.ip, args.port)
+    postureProxy = ALProxy("ALRobotPosture", args.ip, args.port)
+
+    # Wake up robot
     motionProxy.wakeUp()
+    
+    # Send robot to standing position
+    postureProxy.goToPosture("Stand", 0.5)
+
+    # Call main function
     main(args.ip, args.port)
+
+    # Send robot to rest position
     motionProxy.rest()
