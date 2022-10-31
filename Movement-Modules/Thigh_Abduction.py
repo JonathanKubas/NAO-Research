@@ -34,6 +34,27 @@ def main(robotIP, PORT):
     isAbsolute = True
     motionProxy.angleInterpolation(name, angle, times, isAbsolute)
 
+    # Fix Right Foot and Free Left Foot
+    motionProxy.wbFootState("Fixed", "RLeg")
+    motionProxy.wbFootState("Free", "LLeg")
+
+    # Left Hip Roll Outward
+    name = "LHipRoll"
+    angle = 0.4
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(name, angle, times, isAbsolute)
+
+    # Tells NAO to hold current position for given amount of itme
+    time.sleep(2.0)
+
+    # Left Hip Roll Inward
+    name = "LHipRoll"
+    angle = 0.0
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(name, angle, times, isAbsolute)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", type=str, default="127.0.0.1",
