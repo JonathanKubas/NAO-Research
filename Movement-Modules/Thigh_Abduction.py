@@ -3,12 +3,8 @@ import time
 from naoqi import ALProxy
 
 def main(robotIP, PORT):
-    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxy for ALMotion module to access its methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
-    postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
-
-    # Send robot to Stand Init
-    postureProxy.goToPosture("StandInit", 0.5)
 
     # Enable Whole Body Balancer
     motionProxy.wbEnable(True)
@@ -29,7 +25,7 @@ def main(robotIP, PORT):
 
     # Right Hip Roll Inward
     name = "RHipRoll"
-    angle = 0.0
+    angle = -0.119
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(name, angle, times, isAbsolute)
@@ -50,10 +46,13 @@ def main(robotIP, PORT):
 
     # Left Hip Roll Inward
     name = "LHipRoll"
-    angle = 0.0
+    angle = 0.119
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(name, angle, times, isAbsolute)
+
+    # Time to hold current position
+    time.sleep(2.0)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -63,7 +62,19 @@ if __name__ == "__main__":
                         help="Naoqi port number")
 
     args = parser.parse_args()
+    
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", args.ip, args.port)
+    postureProxy = ALProxy("ALRobotPosture", args.ip, args.port)
+
+    # Wake up robot
     motionProxy.wakeUp()
+    
+    # Send robot to standing position
+    postureProxy.goToPosture("Stand", 0.5)
+
+    # Call main function
     main(args.ip, args.port)
+
+    # Send robot to rest position
     motionProxy.rest()
