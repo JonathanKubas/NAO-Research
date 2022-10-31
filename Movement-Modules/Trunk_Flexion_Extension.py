@@ -3,7 +3,7 @@ import time
 from naoqi import ALProxy
 
 def main(robotIP, PORT):
-    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxy for ALMotion module to access its methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
 
     # Enable Whole Body Balancer
