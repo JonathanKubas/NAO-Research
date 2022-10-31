@@ -1,37 +1,57 @@
 import argparse
+import time
 from naoqi import ALProxy
 
-def jointRotation(motionProxy, names, angles, times, isAbsolute):
-    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
-
 def main(robotIP, PORT):
-    # Set prooxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
-    postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
 
-    # Set stiffness for whole body
-    motionProxy.setStiffnesses("Body", 1.0)
-
-    # Send robot to Stand Init
-    postureProxy.goToPosture("StandInit", 0.5)
+    # Enable Whole Body Balancer
+    motionProxy.wbEnable(True)
 
     # Fix both of NAO's feet to the ground
     motionProxy.wbFootState("Fixed", "Legs")
 
-    # Right and Left Shoulder Pitch/Roll
-    jointRotation(motionProxy, ["LShoulderPitch", "LShoulderRoll"], [0.15, -0.15], 1.0, True)
-    jointRotation(motionProxy, ["RShoulderPitch", "RShoulderRoll"], [1.0, 0.15], 1.0, True)
+    # Right and Left Shoulder Pitch/Roll Movement
+    names = ["LShoulderPitch", "LShoulderRoll", "RShoulderPitch", "RShoulderRoll"]
+    angles = [0.15, -0.15, 0.8, 0.15]
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
-    # Right and Left Elbow Yaw
-    jointRotation(motionProxy, "LElbowYaw", 0.0, 1.0, True)
-    jointRotation(motionProxy, "RElbowYaw", 0.0, 1.0, True)
+    # Right and Left Elbow Yaw Movement
+    names = ["LElbowYaw", "RElbowYaw"]
+    angles = [0.0, 0.0]
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
-    # Right and Left Elbow Roll
-    jointRotation(motionProxy, "LElbowRoll", -1.5, 1.0, True)
-    jointRotation(motionProxy, "RElbowRoll", 1.5, 1.0, True)
+    # Right and Left Elbow Roll Movement
+    names = ["LElbowRoll", "RElbowRoll"]
+    angles = [-1.5, 1.5]
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
-    # Right and Left Hip Pitch
-    jointRotation(motionProxy, ["LHipPitch", "RHipPitch"], -1.0, 3.0, True)
+    # Right and Left Hip Pitch Movement
+    names = ["LHipPitch", "RHipPitch"]
+    angles = -1.0
+    times = 3.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Time to hold current position
+    time.sleep(2.0)
+
+    # Bring NAO back to standing position
+    names = ["LShoulderPitch", "LShoulderRoll", "RShoulderPitch", "RShoulderRoll", "LElbowYaw", "RElbowYaw", "LElbowRoll", "RElbowRoll", "LHipPitch", "RHipPitch"]
+    angles = [1.442, 0.224, 1.442, -0.224, -1.202, 1.202, -0.417, 0.417, 0.127, 0.127]
+    times = 2.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Time to hold current position
+    time.sleep(2.0)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -41,7 +61,19 @@ if __name__ == "__main__":
                         help="Naoqi port number")
 
     args = parser.parse_args()
+    
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", args.ip, args.port)
+    postureProxy = ALProxy("ALRobotPosture", args.ip, args.port)
+
+    # Wake up robot
     motionProxy.wakeUp()
+    
+    # Send robot to standing position
+    postureProxy.goToPosture("Stand", 0.5)
+
+    # Call main function
     main(args.ip, args.port)
+
+    # Send robot to rest position
     motionProxy.rest()
