@@ -3,16 +3,22 @@ import time
 from naoqi import ALProxy
 
 def main(robotIP, PORT):
-    # Set prooxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
     postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
 
     # Send robot to Stand Init
     postureProxy.goToPosture("StandInit", 0.5)
 
+    # Enable Whole Body Balancer
+    motionProxy.wbEnable(True)
+
+    # Fix both legs
+    motionProxy.wbFootState("Fixed", "Legs")
+
     # Leg Movement to put NAO in sitiing position
-    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch", "LAnklePitch", "RAnklePitch"]
-    angles = [-1.2, -1.2, 1.2, 1.2, 0.0, 0.0]
+    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch"]
+    angles = [-1.0, -1.0, 1.4, 1.4]
     times = 3.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
@@ -20,13 +26,13 @@ def main(robotIP, PORT):
     # Tells NAO to hold current position for given amount of itme
     time.sleep(1.0)
 
-    # Fix Right Foot and Free Left Foot
+    # Fix Left Foot and Free Right Foot
     motionProxy.wbFootState("Fixed", "LLeg")
     motionProxy.wbFootState("Free", "RLeg")
 
-    # Right Ankle Dorsiflexion
+    # Right Ankle Dorsiflexion Upward
     names = ["RAnklePitch"]
-    angles = -0.4
+    angles = -0.7
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
@@ -34,9 +40,30 @@ def main(robotIP, PORT):
     # Hold ankle position
     time.sleep(2.0)
 
-    # Right Ankle Dorsiflexion
+    # Right Ankle Dorsiflexion Downward
     names = ["RAnklePitch"]
-    angles = 0.0
+    angles = -0.45
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Fix Right Foot and Free Left Foot
+    motionProxy.wbFootState("Fixed", "RLeg")
+    motionProxy.wbFootState("Free", "LLeg")
+
+    # Left Ankle Dorsiflexion
+    names = ["LAnklePitch"]
+    angles = -0.7
+    times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Hold ankle position
+    time.sleep(2.0)
+
+    # Left Ankle Dorsiflexion
+    names = ["LAnklePitch"]
+    angles = -0.45
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
