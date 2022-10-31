@@ -3,12 +3,8 @@ import time
 from naoqi import ALProxy
 
 def main(robotIP, PORT):
-    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
+    # Set proxy for ALMotion to access its methods
     motionProxy = ALProxy("ALMotion", robotIP, PORT)
-    postureProxy = ALProxy("ALRobotPosture", robotIP, PORT)
-
-    # Send robot to Stand Init
-    postureProxy.goToPosture("StandInit", 0.5)
 
     # Enable Whole Body Balancer
     motionProxy.wbEnable(True)
@@ -17,8 +13,8 @@ def main(robotIP, PORT):
     motionProxy.wbFootState("Fixed", "Legs")
 
     # Leg Movement to put NAO in sitiing position
-    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch"]
-    angles = [-1.0, -1.0, 1.4, 1.4]
+    names = ["LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch", "LShoulderPitch", "RShoulderPitch"]
+    angles = [-1.0, -1.0, 1.4, 1.4, 0.5, 0.5]
     times = 3.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
@@ -42,7 +38,7 @@ def main(robotIP, PORT):
 
     # Right Ankle Dorsiflexion Downward
     names = ["RAnklePitch"]
-    angles = -0.45
+    angles = -0.199
     times = 1.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
@@ -63,8 +59,15 @@ def main(robotIP, PORT):
 
     # Left Ankle Dorsiflexion
     names = ["LAnklePitch"]
-    angles = -0.45
+    angles = -0.199
     times = 1.0
+    isAbsolute = True
+    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+
+    # Bring NAO back to standing position
+    names = ["LShoulderPitch", "RShoulderPitch", "LHipPitch", "RHipPitch", "LKneePitch", "RKneePitch"]
+    angles = [1.442, 1.442, 0.127, 0.127, -0.092, -0.092]
+    times = 2.0
     isAbsolute = True
     motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
@@ -76,7 +79,19 @@ if __name__ == "__main__":
                         help="Naoqi port number")
 
     args = parser.parse_args()
+    
+    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
     motionProxy = ALProxy("ALMotion", args.ip, args.port)
+    postureProxy = ALProxy("ALRobotPosture", args.ip, args.port)
+
+    # Wake up robot
     motionProxy.wakeUp()
+    
+    # Send robot to standing position
+    postureProxy.goToPosture("Stand", 0.5)
+
+    # Call main function
     main(args.ip, args.port)
+
+    # Send robot to rest position
     motionProxy.rest()
