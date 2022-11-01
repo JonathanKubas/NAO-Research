@@ -20,12 +20,17 @@ The general Chorepgraphe software is an interface that allows users to manipulat
 5. Once the installation is complete, the following home screen will be displayed:  
 ![image](https://user-images.githubusercontent.com/78547750/199272230-fb80e8aa-b514-4a28-b23b-bbe20008bfc3.png)
 
+### NAO Python SDK
+After installing the Choregraphe software it is also important to download the Python SDK that SoftBank Robotics provides. This SDK contains all the required libraries and APIs that allow a user to interact and program the NAO robot. To download this SDK you can visit the same linke as above, https://www.aldebaran.com/fr/support/nao-6/downloads-softwares, and install the proper SDK depending on your operating system. Once downloaded and extracted, it is recommened to change the name of the downloaded folder to something more recognizable. "Pynaoqi" is usually the suggested name.
+
 ### Python
-https://www.python.org/downloads/windows/
-1. Add appropriate enviornment variables:  
-2. 
-3.
-4.
+Once you are down downloading all the SoftBank Robotic's software it is neccessry for the user to then download the correct version of python if not done so already. It is critical that users download the 2.7 version of python because that is what is currently compatiable with the NAO software. If a fresh download is needed, the appropriate executible gor your operating system can be found on the following link, https://www.python.org/downloads/windows/. After the installation of this software is complete, users can follow the following steps to make sure their enviornment is properly configured to run python:
+1. Add appropriate enviornment variables (Specifically last two in image below):  
+![image](https://user-images.githubusercontent.com/78547750/199274387-cbb1d7ab-2818-45b8-8d55-bed73ea0fb5f.png)
+2. Place the previously downloaded python SDK within the site-packages folder of your downloaded python version:  
+![image](https://user-images.githubusercontent.com/78547750/199289738-ea641284-aa86-454c-bdb3-8ca68254fca3.png)
+3. Create a PYTHONPATH enviornment variable and give it the path to the lib folder in your downloaded python SDK:  
+![image](https://user-images.githubusercontent.com/78547750/199291740-7236f494-33a0-45da-8293-cdb327923f47.png)
 
 ## Setting Up Virtial Robot
 
