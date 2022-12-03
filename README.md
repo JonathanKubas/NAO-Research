@@ -33,12 +33,10 @@ Once you are down downloading all the SoftBank Robotic's software it is neccessr
 ![image](https://user-images.githubusercontent.com/78547750/199291740-7236f494-33a0-45da-8293-cdb327923f47.png)
 
 ## Setting Up Virtial Robot
+Through the Choregraphe interface you are able to connect to various differnet physical and simulated SoftBank Robotics supported robots. However, depending on what type of robot you are connecting to, the complexity to actually connect to it can change. 
 
 ## Python Scripts
-
 ### Development
 ```
 import naoqi
 ```
-
-### List of Program
