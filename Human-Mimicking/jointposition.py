@@ -50,7 +50,21 @@ class LegJointPositions(object):
 
 # Main class of the program
 class JointPositions(object):
-    def __init__(self):
+    def __init__(self, ip, port):
+        # Set proxies for ALMotion and ALRobotPosture modules to access their methods
+        self.motionProxy = ALProxy("ALMotion", ip, port)
+        self.postureProxy = ALProxy("ALRobotPosture", ip, port)
+
+        # Wake up robot
+        self.motionProxy.wakeUp()
+        self.postureProxy.goToPosture("StandInit", 0.5)
+
+        # Enable Whole Body Balancer
+        self.motionProxy.wbEnable(True)
+
+        # Fix both of NAO's feet to the ground
+        self.motionProxy.wbFootState("Fixed", "Legs")
+
         # Initialize python game
         pygame.init()
 
@@ -150,13 +164,35 @@ class JointPositions(object):
         angleValues.append(leftShoulderPitch(leftArmPositions))
         angleValues.append(leftShoulderRoll(leftArmPositions))
         angleValues.append(leftElbowRoll(leftArmPositions))
+        angleValues.append(leftHipPitch(leftLegPositions))
+        angleValues.append(leftHipRoll(leftLegPositions))
+        angleValues.append(leftKneePitch(leftLegPositions))
         angleValues.append(rightShoulderPitch(rightArmPosiions))
         angleValues.append(rightShoulderRoll(rightArmPosiions))
         angleValues.append(rightElbowRoll(rightArmPosiions))
+        angleValues.append(rightHipPitch(rightLegPositions))
+        angleValues.append(rightHipRoll(rightLegPositions))
+        angleValues.append(rightKneePitch(rightLegPositions))
+
         return angleValues
 
+    def fixFeet(self, joints):
+        leftFoot = joints[PyKinectV2.JointType_FootLeft]
+        rightFoot = joints[PyKinectV2.JointType_FootRight]
+
+        if (leftFoot.Position.y > 0.10):
+            self.motionProxy.wbFootState("Fixed", "LLeg")
+            self.motionProxy.wbFootState("Free", "RLeg")
+            return
+        elif rightFoot.Position.y > 0.10:
+            self.motionProxy.wbFootState("Fixed", "RLeg")
+            self.motionProxy.wbFootState("Free", "LLeg")
+            return
+        else:
+            self.motionProxy.wbFootState("Fixed", "Legs")
+            return
+
     def run(self):
-        motionProxy = ALProxy("ALMotion", "127.0.0.1", 9559)
         # Tells program to keep updating pygame window until user quits the game
         while not self._done:
             # Checks to see if user did something to the pygame window
@@ -194,17 +230,19 @@ class JointPositions(object):
                     joint_points = self._kinect.body_joints_to_color_space(joints)
                     self.draw_body(joints, joint_points, SKELETON_COLORS[i])
 
-                    # Get the x, y, and z coordinates for each necessary joint and calculate the necessary angle values
+                    # Calculate and store necessary angle values
                     naoAngleValues = []
                     naoAngleValues = self.get_joint_data(joints, naoAngleValues)
-                    print(naoAngleValues)
+
+                    # Specifies which foot to fix to the ground
+                    self.fixFeet(joints)
 
                     # Move nao's joints with calculated angle values
                     names = ["LShoulderPitch", "LShoulderRoll", "LElbowRoll", "RShoulderPitch", "RShoulderRoll", "RElbowRoll"]
                     angles = naoAngleValues
                     times = 0.5
                     isAbsolute = True
-                    motionProxy.angleInterpolation(names, angles, times, isAbsolute)
+                    self.motionProxy.angleInterpolation(names, angles, times, isAbsolute)
 
             # --- copy back buffer surface pixels to the screen, resize it if needed and keep aspect ratio
             # --- (screen size may be different from Kinect's color frame size) 
@@ -225,6 +263,9 @@ class JointPositions(object):
         self._kinect.close()
         pygame.quit()
 
+        # Send robot to rest position
+        self.motionProxy.rest()
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", type=str, default="127.0.0.1",
@@ -233,20 +274,9 @@ def main():
                         help="Naoqi port number")
 
     args = parser.parse_args()
-    
-    # Set proxies for ALMotion and ALRobotPosture modules to access their methods
-    motionProxy = ALProxy("ALMotion", args.ip, args.port)
-    postureProxy = ALProxy("ALRobotPosture", args.ip, args.port)
 
-    # Wake up robot
-    motionProxy.wakeUp()
-    postureProxy.goToPosture("StandInit", 0.5)
-
-    game = JointPositions()
+    game = JointPositions(args.ip, args.port)
     game.run()
-
-    # Send robot to rest position
-    motionProxy.rest()
 
 if __name__ == "__main__":
     main()

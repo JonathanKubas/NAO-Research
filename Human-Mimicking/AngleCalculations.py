@@ -77,13 +77,49 @@ def rightElbowRoll(rightArm):
     angle *= (math.pi / 180)
     return angle
 
-# def leftHipPitch():
+def leftHipPitch(leftArm, leftLeg):
+    yDistance = leftArm.shoulderY - leftLeg.hipY
+    zDistance = leftArm.shoulderZ - leftLeg.hipZ
+    angle = math.degrees(math.atan(yDistance / zDistance))
+    if angle < -88:
+        angle = -88
+    if angle > 27:
+        angle = 27
+    angle *= (math.pi / 180)
+    return angle
 
-# def rightHipPitch():
+def rightHipPitch(rightArm, rightLeg):
+    yDistance = rightArm.shoulderY - rightLeg.hipY
+    zDistance = rightArm.shoulderZ - rightLeg.hipZ
+    angle = math.degrees(math.atan(yDistance / zDistance))
+    if angle < -88:
+        angle = -88
+    if angle > 27:
+        angle = 27
+    angle *= (math.pi / 180)
+    return angle
 
-# def leftHipRoll():
+def leftHipRoll(leftLeg):
+    xDistance = leftLeg.kneeX - leftLeg.hipX
+    yDistance = leftLeg.hipY - leftLeg.kneeY
+    angle = math.degrees(math.atan(xDistance / yDistance))
+    if angle < 0:
+        angle = 0
+    if angle > 45:
+        angle = 45
+    angle *= (math.pi / 180)
+    return angle
 
-# def rightHipRoll():
+def rightHipRoll(rightLeg):
+    xDistance = rightLeg.kneeX - rightLeg.hipX
+    yDistance = rightLeg.hipY - rightLeg.kneeY
+    angle = math.degrees(math.atan(xDistance / yDistance))
+    if angle < -45:
+        angle = -45
+    if angle > 45:
+        angle = 45
+    angle *= (math.pi / 180)
+    return angle
 
 def leftKneePitch(leftLeg):
     hipKneeDistance = math.sqrt((leftLeg.hipZ - leftLeg.kneeZ)**2 + (leftLeg.hipY - leftLeg.kneeY)**2)
