@@ -8,12 +8,10 @@ import argparse
 from naoqi import ALProxy
 
 # Other Imports
-import time
 import pygame
 import ctypes
 from ctypes import *
 from AngleCalculations import *
-import speech_recognition as sr
 
 # Different colors for drawing skeletons 
 SKELETON_COLORS = [pygame.color.THECOLORS["red"], 
@@ -237,15 +235,12 @@ class HumanMimicking(object):
                     naoAngleValues.append(leftHipPitch(leftArmPositions, leftLegPositions))
                     naoAngleValues.append(leftHipRoll(leftLegPositions))
                     naoAngleValues.append(leftKneePitch(leftLegPositions))
-                    # naoAngleValues.append(leftAnklePitch(leftLegPositions))
-                    # naoAngleValues.append(leftAnkleRoll(leftLegPositions))
                     naoAngleValues.append(rightShoulderPitch(rightArmPosiions))
                     naoAngleValues.append(rightShoulderRoll(rightArmPosiions))
                     naoAngleValues.append(rightElbowRoll(rightArmPosiions))
                     naoAngleValues.append(rightHipPitch(rightArmPosiions, rightLegPositions))
                     naoAngleValues.append(rightHipRoll(rightLegPositions))
                     naoAngleValues.append(rightKneePitch(rightLegPositions))
-                    # naoAngleValues.append(rightAnklePitch(rightLegPositions))
                     print(naoAngleValues)
                     
                     # Check the hand state to see which feet to fix to floor

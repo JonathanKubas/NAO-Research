@@ -1,3 +1,4 @@
+from scipy.interpolate import interp1d
 import math
 
 def leftShoulderPitch(leftArm):
@@ -126,11 +127,13 @@ def leftKneePitch(leftLeg):
     kneeAnkleDistance = math.sqrt((leftLeg.kneeZ - leftLeg.ankleZ)**2 + (leftLeg.kneeY - leftLeg.ankleY)**2)
     hipAnkleDistance = math.sqrt((leftLeg.hipZ - leftLeg.ankleZ)**2 + (leftLeg.hipY - leftLeg.ankleY)**2)
     angle = 121 - math.degrees(math.acos(((hipKneeDistance)**2 + (kneeAnkleDistance)**2 - (hipAnkleDistance)**2) / (2 * (hipKneeDistance) * (kneeAnkleDistance))))
-    if angle > 121:
-        angle = 121
+    angle *= (math.pi / 180)
+    if angle > 0.7:
+        angle = 0.7
     elif angle < 0:
         angle = 0
-    angle *= (math.pi / 180)
+    interpolatedAngle = interp1d([0, 0.7], [0, 2.120198])
+    angle = float(interpolatedAngle(angle))
     return angle
 
 def rightKneePitch(rightLeg):
@@ -138,45 +141,11 @@ def rightKneePitch(rightLeg):
     kneeAnkleDistance = math.sqrt((rightLeg.kneeZ - rightLeg.ankleZ)**2 + (rightLeg.kneeY - rightLeg.ankleY)**2)
     hipAnkleDistance = math.sqrt((rightLeg.hipZ - rightLeg.ankleZ)**2 + (rightLeg.hipY - rightLeg.ankleY)**2)
     angle = 121 - math.degrees(math.acos(((hipKneeDistance)**2 + (kneeAnkleDistance)**2 - (hipAnkleDistance)**2) / (2 * (hipKneeDistance) * (kneeAnkleDistance))))
-    if angle > 121:
-        angle = 121
+    angle *= (math.pi / 180)
+    if angle > 0.7:
+        angle = 0.7
     elif angle < 0:
         angle = 0
-    angle *= (math.pi / 180)
+    interpolatedAngle = interp1d([0, 0.7], [0, 2.120198])
+    angle = float(interpolatedAngle(angle))
     return angle
-
-def leftAnklePitch(leftLeg):
-  print()
-
-def rightAnklePitch():
-  print()
-
-'''
-def leftAnkleRoll(leftLeg):
-  a = math.sqrt((leftLeg.kneeX - leftLeg.ankleX)**2 + (leftLeg.kneeY - leftLeg.ankleY)**2)
-  b = math.sqrt((leftLeg.ankleX - leftLeg.footX)**2 + (leftLeg.ankleY - leftLeg.footY)**2)
-  c = math.sqrt((leftLeg.kneeX - leftLeg.footX)**2 + (leftLeg.kneeY - leftLeg.footY)**2)
-  angle = 180 - math.degrees(math.acos((a**2 + b**2 - c**2) / (2 * a * b)))
-  if leftLeg.ankleX > leftLeg.footX:
-    angle *= -1
-  if angle > 44:
-    angle = 44
-  if angle < -22:
-    angle = 22
-  angle *= (math.pi / 180)
-  return angle
-
-def rightAnkleRoll(rightLeg):
-  a = math.sqrt((rightLeg.kneeX - rightLeg.ankleX)**2 + (rightLeg.kneeY - rightLeg.ankleY)**2)
-  b = math.sqrt((rightLeg.ankleX - rightLeg.footX)**2 + (rightLeg.ankleY - rightLeg.footY)**2)
-  c = math.sqrt((rightLeg.kneeX - rightLeg.footX)**2 + (rightLeg.kneeY - rightLeg.footY)**2)
-  angle = 180 - math.degrees(math.acos((a**2 + b**2 - c**2) / (2 * a * b)))
-  if rightLeg.ankleX < rightLeg.footX:
-    angle *= -1
-  if angle < -44:
-    angle = -44
-  if angle > 22:
-    angle = -22
-  angle *= (math.pi / 180)
-  return angle
-'''
