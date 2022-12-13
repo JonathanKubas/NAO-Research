@@ -75,6 +75,6 @@ Finally, with all the setup out of the way, you can start running some of the ex
 $ python [insert file name].py
 
 Examples
-$ python jointposition.pu (Used specfically for human mimicking)
+$ python HumanMimiching.py (Used specfically for human mimicking)
 $ python Squat.py (Used for make the NAO robot squat)
 ```
