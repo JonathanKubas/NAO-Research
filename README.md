@@ -6,7 +6,7 @@ The entire contents of this file acts as a general summary and an explanation of
 To be able to properly run and develope Python programs meant to interact with either a physical or virtial NAO robot, or any other supported SoftBank Robotics robot, the user needs to have properly installed and configured the necessary software. In this case, the two major pieces of software that are needed are the Choregraphe interface and a version of Python 2.7. The two sections below describe each of these need tools and goes into depth on how to install and or configure them so that they can be used to program a given NAO robot.
 
 ### Choregraphe
-The general Chorepgraphe software is an interface that allows users to manipulate a given SoftBank Robotics robot by the use of either block based coding or regular C++ or Python scripts. It also allows users to either connect and run their developed programs on either a physical NAO robot or a preinstalled virtual one that can be connected to remotely. If not done so already, the following url provides a link to where users can download the installation wizard for the Choregraphe software https://www.aldebaran.com/fr/support/nao-6/downloads-softwares. It is necessary that this IDE is set up properly, so it is imporant that the following steps below are followed when downloading this software:
+The general Chorepgraphe software is an interface that allows users to manipulate a given SoftBank Robotics robot by the use of either block based coding or regular C++ or Python scripts. It also allows users to connect and run their developed programs on either a physical NAO robot or a preinstalled virtual one that can be connected to remotely. If not done so already, the following url provides a link to where users can download the installation wizard for the Choregraphe software https://www.aldebaran.com/fr/support/nao-6/downloads-softwares. It is necessary that this IDE is set up properly, so it is imporant that the following steps below are followed when downloading this software:
 1. Once the installation wizard is execuated, the following screen will appear:  
 ![image](https://user-images.githubusercontent.com/78547750/199270812-4e0101ed-b488-4c97-8267-325dbf0ccb20.png)  
 2. Accept license agreement:  
@@ -41,14 +41,14 @@ $ python
 >>> import naoqi
 >>>
 ```
-If you recieved an output that prints nothing, similar to the one above, than that means your installation and setup of all the NAO software is good and you can start coding for the NAO robot. However, if this is not the case and you recieve a message along the lines of No Module named naoqi, than something is wrong with your set up. Try looking back to the setup above and make sure everything is configured properly.
+If you recieved an output that prints nothing, similar to the one above, than that means your installation and setup of all the NAO software is good and you can start coding for the NAO robot. However, if this is not the case and you recieve a message along the lines of No Module named naoqi, than something is wrong with your setup. Try looking back to the setup above and make sure everything is configured properly.
 
 ### Microsoft Kinect SDK
-Along with all of the NAO related software that is need to drive the robot, the installation of Microsoft's Kinect SDK is also needed. This SDK allows a user to a program for the microsoft kinect version 2 sensor similar to the NAO SDK. The installation of this software is relatively easy and can be found on the following website, https://www.microsoft.com/en-us/download/details.aspx?id=44561. 
+Along with all of the NAO related software that is need to drive the robot, the installation of Microsoft's Kinect SDK is also needed. This SDK allows a user to program for the microsoft kinect version 2 sensor similar to the NAO SDK. The installation of this software is relatively easy and can be found on the following website, https://www.microsoft.com/en-us/download/details.aspx?id=44561. 
 
 ## Setting Up Virtial Robot
 In most cases, when you open the Choregraphe software, the virtual robot should be up and running by default, however if this is not the case follow the simple instructions down below:
-1. Go to the connection window at the topic of the Choregraphe application and click the connect to button:  
+1. Go to the connection window at the topic of the Choregraphe application and click the "connect to" button:  
 ![image](https://user-images.githubusercontent.com/78547750/207200022-ad0bea6c-3787-4b71-9a8a-573ec38156b9.png) 
 2. This will pop up a window that gives you a list of robots to choose from, the one located locally on your machine should have the name of your computer as the name of the virtual robot:  
 ![image](https://user-images.githubusercontent.com/78547750/207200096-1be0e0d2-cafc-48cd-af4c-45945df71f54.png) 
@@ -57,14 +57,14 @@ If this still does not work you might have to run the naoqi-bin file manually. A
 ![image](https://user-images.githubusercontent.com/78547750/207200183-904741a7-ee40-46af-906c-b009b1c6fe24.png)
 
 ## Necessary Dependencies
-Now with all of the software properly configured and all of your applications running as they should, the following will be a list of all the necessary Python dependencies that will be needed to run the various Pythons scripts within this github page
+Now with all of the software properly configured and all of your applications running as they should, the following will be a list of all the necessary Python dependencies that will be needed to run the various Python scripts within this github page
  - pykinect2 (Microsoft Kinect Version 2 Python Library)
  - pygame (Creates interactive Python game window)
  - ctypes (Dependency need along with pykinect2)
  - argparse (Allow you to change ip and port address when use the python scripts)
-> **_NOTE:_**  Specifically after installing the pykienct2 library, you are going to have to update the PyKinectV2.py and PyKinectRuntime.py files with the contents of the same failes on the following githubpage, https://github.com/Kinect/PyKinect2/tree/master/pykinect2. This is due to some deprecated functionality that was never removed on the pip side of this library.
+> **_NOTE:_**  Specifically after installing the pykienct2 library, you are going to have to update the PyKinectV2.py and PyKinectRuntime.py files with the contents of the same files on the following githubpage, https://github.com/Kinect/PyKinect2/tree/master/pykinect2. This is due to some deprecated functionality that was never removed on the pip side of this library.
 
-To install each of these dependencies, you can use the following pip command to download the Python library for each of this 
+To install each of these dependencies, you can use the following pip command to download the Python library for each of these dependencies:
 ```
 $ python -m pip install [insert python package]
 ```
@@ -76,5 +76,5 @@ $ python [insert file name].py
 
 Examples
 $ python HumanMimiching.py (Used specfically for human mimicking)
-$ python Squat.py (Used for make the NAO robot squat)
+$ python Squat.py (Used to make the NAO robot squat)
 ```
