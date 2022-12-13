@@ -78,7 +78,7 @@ class HumanMimicking(object):
         self._screen = pygame.display.set_mode((self._infoObject.current_w >> 1, self._infoObject.current_h >> 1), pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE, 32)
 
         # Give python game window a title
-        pygame.display.set_caption("User's Joint Positions")
+        pygame.display.set_caption("Human Mimicking")
 
         # Loop until the user clicks the close button.
         self._done = False
@@ -157,6 +157,7 @@ class HumanMimicking(object):
         ctypes.memmove(address, frame.ctypes.data, frame.size)
         del address
         target_surface.unlock()
+
     # Checks the open or closed state of hands to see which feet to fix
     def hand_state_check(self, body):
       leftHandState = body.hand_left_state
@@ -221,7 +222,7 @@ class HumanMimicking(object):
                     joint_points = self._kinect.body_joints_to_color_space(joints)
                     self.draw_body(joints, joint_points, SKELETON_COLORS[i])
 
-                    # Calculate and store necessary angle values
+                    # Set variables to hold the joint values for specific joint chains
                     naoAngleValues = []
                     leftArmPositions = ArmJointPositions(joints[PyKinectV2.JointType_ShoulderLeft], joints[PyKinectV2.JointType_ElbowLeft], joints[PyKinectV2.JointType_WristLeft])
                     rightArmPosiions = ArmJointPositions(joints[PyKinectV2.JointType_ShoulderRight], joints[PyKinectV2.JointType_ElbowRight], joints[PyKinectV2.JointType_WristRight])
