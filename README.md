@@ -49,9 +49,10 @@ Along with all of the NAO related software that is need to drive the robot, the 
 ## Setting Up Virtial Robot
 In most cases, when you open the Choregraphe software, the virtual robot should be up and running by default, however if this is not the case follow the simple instructions down below:
 1. Go to the connection window at the topic of the Choregraphe application and click the connect to button:  
-![image](https://user-images.githubusercontent.com/78547750/207200022-ad0bea6c-3787-4b71-9a8a-573ec38156b9.png)
+![image](https://user-images.githubusercontent.com/78547750/207200022-ad0bea6c-3787-4b71-9a8a-573ec38156b9.png) 
 2. This will pop up a window that gives you a list of robots to choose from, the one located locally on your machine should have the name of your computer as the name of the virtual robot:  
-![image](https://user-images.githubusercontent.com/78547750/207200096-1be0e0d2-cafc-48cd-af4c-45945df71f54.png)
+![image](https://user-images.githubusercontent.com/78547750/207200096-1be0e0d2-cafc-48cd-af4c-45945df71f54.png) 
+
 If this still does not work you might have to run the naoqi-bin file manually. An example image below shows you exactly where to find this file within your own isntallation of Choregraphe
 ![image](https://user-images.githubusercontent.com/78547750/207200183-904741a7-ee40-46af-906c-b009b1c6fe24.png)
 
