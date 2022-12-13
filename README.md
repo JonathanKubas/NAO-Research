@@ -1,12 +1,12 @@
 # NAO Robotics Research
 ## Introduction
-The entire contents of this file acts as a general summary and an explanation of the software needed to run and develope python scripts that are intentionally written to interact with a given NAO robot. In particular, within this github page there are two different methods that are currently supported to help control the motion of the NAO robot remotely. Specifically, these two different methods are by hard coding movements through the use of NAO's Python SDK and by human mimicking, which is similar to the first method, but also inolves the use of a Microsoft Kinect V2 sensor. To be able to run either of these methods, a list of all the essential software installations and dependencies can be found below, along with a comprehensive intruction manual to properly set everything up. 
+The entire contents of this file acts as a general summary and an explanation of the software needed to run and develope Python scripts that are intentionally written to interact with a given NAO robot. In particular, within this github page there are two different methods that are currently supported to help control the motion of the NAO robot remotely. Specifically, these two different methods are by hard coding movements through the use of NAO's Python SDK and by human mimicking, which is similar to the first method, but also inolves the use of a Microsoft Kinect V2 sensor. To be able to run either of these methods, a list of all the essential software installations and dependencies can be found below, along with a comprehensive intruction manual to properly set everything up. 
 
 ## Setting Up Your Environment
-To be able to properly run and develope python programs meant to interact with either a physical or virtial NAO robot, or any other supported SoftBank Robotics robot, the user needs to have properly installed and configured the necessary software. In this case, the two major pieces of software that are needed are the Choregraphe interface and a version of python 2.7. The two sections below describe each of these need tools and goes into depth on how to install and or configure them so that they can be used to program a given NAO robot.
+To be able to properly run and develope Python programs meant to interact with either a physical or virtial NAO robot, or any other supported SoftBank Robotics robot, the user needs to have properly installed and configured the necessary software. In this case, the two major pieces of software that are needed are the Choregraphe interface and a version of Python 2.7. The two sections below describe each of these need tools and goes into depth on how to install and or configure them so that they can be used to program a given NAO robot.
 
 ### Choregraphe
-The general Chorepgraphe software is an interface that allows users to manipulate a given SoftBank Robotics robot by the use of either block based coding or regular C++ or python scripts. It also allows users to either connect and run their developed programs on either a physical NAO robot or a preinstalled virtual one that can be connected to remotely. If not done so already, the following url provides a link to where users can download the installation wizard for the Choregraphe software https://www.aldebaran.com/fr/support/nao-6/downloads-softwares. It is necessary that this IDE is set up properly, so it is imporant that the following steps below are followed when downloading this software:
+The general Chorepgraphe software is an interface that allows users to manipulate a given SoftBank Robotics robot by the use of either block based coding or regular C++ or Python scripts. It also allows users to either connect and run their developed programs on either a physical NAO robot or a preinstalled virtual one that can be connected to remotely. If not done so already, the following url provides a link to where users can download the installation wizard for the Choregraphe software https://www.aldebaran.com/fr/support/nao-6/downloads-softwares. It is necessary that this IDE is set up properly, so it is imporant that the following steps below are followed when downloading this software:
 1. Once the installation wizard is execuated, the following screen will appear:  
 ![image](https://user-images.githubusercontent.com/78547750/199270812-4e0101ed-b488-4c97-8267-325dbf0ccb20.png)  
 2. Accept license agreement:  
@@ -22,21 +22,21 @@ The general Chorepgraphe software is an interface that allows users to manipulat
 After installing the Choregraphe software it is also important to download the Python SDK that SoftBank Robotics provides. This SDK contains all the required libraries and APIs that allow a user to interact and program the NAO robot. To download this SDK you can visit the same link as above, https://www.aldebaran.com/fr/support/nao-6/downloads-softwares, and install the proper SDK depending on your operating system. Once downloaded and extracted, it is recommened to change the name of the downloaded folder to something more recognizable. "Pynaoqi" is usually the suggested name.
 
 ### Python
-Once you are down downloading all the SoftBank Robotic's software it is neccessry for the user to then download the correct version of python if not done so already. It is critical that users downloads the 2.7 version of python because that is what is currently compatiable with the NAO software. If a fresh download is needed, the appropriate executible for your operating system can be found on the following link, https://www.python.org/downloads/windows/. After the installation of this software is complete, users can follow the following steps to make sure their enviornment is properly configured to run python along with element's of NAO's Python SDK:
+Once you are down downloading all the SoftBank Robotic's software it is neccessry for the user to then download the correct version of Python if not done so already. It is critical that users downloads the 2.7 version of Python because that is what is currently compatiable with the NAO software. If a fresh download is needed, the appropriate executible for your operating system can be found on the following link, https://www.python.org/downloads/windows/. After the installation of this software is complete, users can follow the following steps to make sure their enviornment is properly configured to run Python along with element's of NAO's Python SDK:
 1. Add appropriate enviornment variables (Specifically last two in image below):  
 ![image](https://user-images.githubusercontent.com/78547750/199274387-cbb1d7ab-2818-45b8-8d55-bed73ea0fb5f.png)
-2. Place the previously downloaded python SDK within the site-packages folder of your downloaded python version:  
+2. Place the previously downloaded Python SDK within the site-packages folder of your downloaded Python version:  
 ![image](https://user-images.githubusercontent.com/78547750/199289738-ea641284-aa86-454c-bdb3-8ca68254fca3.png)
-3. Create a PYTHONPATH enviornment variable and give it the path to the lib folder in your downloaded python SDK:  
+3. Create a PYTHONPATH enviornment variable and give it the path to the lib folder in your downloaded Python SDK:  
 ![image](https://user-images.githubusercontent.com/78547750/199291740-7236f494-33a0-45da-8293-cdb327923f47.png)
 
 ### Quick Sanity Check
 To make sure that your installation of all the software above works and to make sure you can use the necessary SDK, you can follow the following sanity check:
-1. Run either you prexisting or freshly installed python 2.7 version with a command similar to the one below:
+1. Run either you prexisting or freshly installed Python 2.7 version with a command similar to the one below:
 ```
 $ python
 ```
-2. Within this newly started python shell run the following import statement:
+2. Within this newly started Python shell run the following import statement:
 ```
 >>> import naoqi
 >>>
